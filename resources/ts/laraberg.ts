@@ -1,4 +1,4 @@
-import '@van-ons/block-editor/dist/styles.css'
+import '@oobi/block-editor/dist/styles.css'
 
-export { wordpress, Editor, registerBlockType, removeEditor } from '@van-ons/block-editor'
+export { wordpress, Editor, registerBlockType, removeEditor } from '@oobi/block-editor'
 export { init } from './init'

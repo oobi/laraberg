@@ -18,15 +18,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/VanOns/laraberg.git"
+    "url": "git+https://github.com/oobi/laraberg.git"
   },
-  "author": "Maurice Wijnia",
+  "author": "Oobi (forked from Maurice Wijnia)",
   "license": "GPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/VanOns/laraberg/issues"
+    "url": "https://github.com/oobi/laraberg/issues"
   },
-  "homepage": "https://github.com/VanOns/laraberg#readme",
+  "homepage": "https://github.com/oobi/laraberg#readme",
   "devDependencies": {
+    "ajv": "^8.17.1",
     "css-loader": "^6.5.1",
     "css-minimizer-webpack-plugin": "^3.1.4",
     "eslint": "^9.9.0",
@@ -42,11 +43,11 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "@van-ons/block-editor": "^1.0.0",
+    "@oobi/block-editor": "github:oobi/block-editor#main",
     "qs": "^6.10.3"
   },
   "peerDependencies": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   }
 }
