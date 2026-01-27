@@ -26,11 +26,18 @@ module.exports = {
                     'css-loader',
                     'sass-loader'
                 ]
+            },
+            // Handle ESM modules that don't include file extensions
+            {
+                test: /\.m?js$/,
+                resolve: {
+                    fullySpecified: false
+                }
             }
         ]
     },
     resolve: {
-        extensions: ['.ts', '.js'],
+        extensions: ['.ts', '.js', '.mjs'],
     },
     externals: {
         'react': 'React',
