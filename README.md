@@ -48,9 +48,9 @@ environment it runs in. An easy way to do this would be to add the following
 lines to your page:
 
 ```html
-<script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 
-<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 ```
 
 ### Usage

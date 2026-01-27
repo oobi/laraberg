@@ -43,7 +43,7 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "@oobi/block-editor": "github:oobi/block-editor#main",
+    "@oobi/block-editor": "file:../block-editor",
     "qs": "^6.10.3"
   },
   "peerDependencies": {
