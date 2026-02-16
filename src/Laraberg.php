@@ -12,6 +12,8 @@ class Laraberg
 
     protected string $cssRouteUri = '';
 
+    protected string $globalStylesRouteUri = '';
+
     /**
      * Set the JS route URI (called during boot).
      */
@@ -34,6 +36,14 @@ class Laraberg
     public function setCssRouteUri(string $uri): void
     {
         $this->cssRouteUri = $uri;
+    }
+
+    /**
+     * Set the global styles CSS route URI (called during boot).
+     */
+    public function setGlobalStylesRouteUri(string $uri): void
+    {
+        $this->globalStylesRouteUri = $uri;
     }
 
     /**
@@ -86,6 +96,36 @@ class Laraberg
             'vendor/laraberg/css/laraberg.css',
             $options
         );
+    }
+
+    /**
+     * Generate the <link> tag for the global styles CSS.
+     *
+     * This CSS provides layout rules, CSS custom properties, and preset
+     * utility classes — generated from theme.json, mirroring WordPress.
+     */
+    public static function globalStylesTag(array $options = []): string
+    {
+        $url = static::globalStylesUrl($options);
+        $nonce = isset($options['nonce']) ? " nonce=\"{$options['nonce']}\"" : '';
+
+        return "<link rel=\"stylesheet\" href=\"{$url}\" data-laraberg-global-styles{$nonce}>";
+    }
+
+    /**
+     * Get the global styles CSS URL.
+     */
+    public static function globalStylesUrl(array $options = []): string
+    {
+        $instance = app(static::class);
+
+        // Global styles are always route-served (dynamically generated PHP)
+        $url = (string) str($instance->globalStylesRouteUri)->when(
+            ! str($instance->globalStylesRouteUri)->isUrl(),
+            fn ($u) => $u->start('/')
+        );
+
+        return $url;
     }
 
     public static function registerBlockType(

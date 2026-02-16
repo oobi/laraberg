@@ -4,6 +4,7 @@ namespace Oobi\Laraberg\Http\Controllers;
 
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Oobi\Laraberg\Services\GlobalStyles\GlobalStylesGenerator;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class AssetController extends Controller
@@ -44,6 +45,23 @@ class AssetController extends Controller
             __DIR__.'/../../../public/css/laraberg.css',
             'text/css; charset=utf-8'
         );
+    }
+
+    /**
+     * Serve PHP-generated global styles CSS (layout, presets, variables).
+     *
+     * This replaces the hand-written iframe-styles.ts with CSS generated
+     * from theme.json data, mirroring what WordPress generates server-side.
+     */
+    public function globalStyles(): Response
+    {
+        $generator = new GlobalStylesGenerator();
+        $css = $generator->getStylesheet();
+
+        return response($css, 200, [
+            'Content-Type' => 'text/css; charset=utf-8',
+            'Cache-Control' => 'public, max-age=3600',
+        ]);
     }
 
     /**

@@ -67,10 +67,14 @@ class LarabergServiceProvider extends ServiceProvider
         $cssRoute = Route::get("{$prefix}/css/laraberg.css", [AssetController::class, 'css'])
             ->name('laraberg.asset.css');
 
+        $globalStylesRoute = Route::get("{$prefix}/css/global-styles.css", [AssetController::class, 'globalStyles'])
+            ->name('laraberg.asset.global-styles');
+
         $laraberg = app(Laraberg::class);
         $laraberg->setJsRouteUri($jsRoute->uri);
         $laraberg->setJsChunkRouteUri($jsChunkRoute->uri);
         $laraberg->setCssRouteUri($cssRoute->uri);
+        $laraberg->setGlobalStylesRouteUri($globalStylesRoute->uri);
     }
 
     /**
@@ -93,6 +97,10 @@ class LarabergServiceProvider extends ServiceProvider
 
         Blade::directive('larabergScriptUrl', function (string $expression) {
             return "<?php echo \Oobi\Laraberg\Laraberg::jsUrl({$expression}); ?>";
+        });
+
+        Blade::directive('larabergGlobalStyles', function (string $expression) {
+            return "<?php echo \Oobi\Laraberg\Laraberg::globalStylesTag({$expression}); ?>";
         });
     }
 }

@@ -1,6 +1,6 @@
 import EditorSettings from '@oobi/block-editor/dist/interfaces/editor-settings'
 import { initializeEditor } from '@oobi/block-editor'
-import defaultSettings, { getLarabergCssUrl } from './default-settings'
+import defaultSettings, { getLarabergCssUrl, getGlobalStylesCssUrl } from './default-settings'
 
 export const init = (
     target: string | HTMLInputElement | HTMLTextAreaElement,
@@ -20,8 +20,14 @@ export const init = (
 
     // Build the resolved assets at init time (DOM is ready)
     const cssUrl = getLarabergCssUrl();
+    const globalStylesUrl = getGlobalStylesCssUrl();
+    let stylesHtml = `<link rel="stylesheet" href="${cssUrl}" />`;
+    if (globalStylesUrl) {
+        stylesHtml += `\n<link rel="stylesheet" href="${globalStylesUrl}" />`;
+    }
+
     const resolvedAssets = {
-        styles: `<link rel="stylesheet" href="${cssUrl}" />`,
+        styles: stylesHtml,
         scripts: ''
     };
 

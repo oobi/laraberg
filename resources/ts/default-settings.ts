@@ -13,6 +13,21 @@ export function getLarabergCssUrl(): string {
     return '/vendor/laraberg/css/laraberg.css';
 }
 
+// Helper to get the global styles CSS URL
+// Discovers the link tag output by @larabergGlobalStyles
+export function getGlobalStylesCssUrl(): string | null {
+    const link = document.querySelector('link[data-laraberg-global-styles]');
+    if (link) {
+        return (link as HTMLLinkElement).href;
+    }
+    // Fallback: check for any link containing global-styles.css
+    const fallback = document.querySelector('link[href*="global-styles.css"]');
+    if (fallback) {
+        return (fallback as HTMLLinkElement).href;
+    }
+    return null;
+}
+
 const defaultSettings: EditorSettings = {
     fetchHandler,
     mediaUpload: undefined,

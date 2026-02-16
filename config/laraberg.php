@@ -28,4 +28,16 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Theme Color
+    |--------------------------------------------------------------------------
+    |
+    | The primary accent color used by the editor (buttons, focus rings, etc).
+    | Maps to --wp-admin-theme-color CSS custom property.
+    |
+    */
+
+    'admin_color' => '#007cba',
+
 ];
