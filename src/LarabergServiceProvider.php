@@ -57,6 +57,12 @@ class LarabergServiceProvider extends ServiceProvider
     {
         $prefix = config('laraberg.prefix', 'laraberg');
 
+        $reactRoute = Route::get("{$prefix}/js/react.min.js", [AssetController::class, 'react'])
+            ->name('laraberg.asset.react');
+
+        $reactDomRoute = Route::get("{$prefix}/js/react-dom.min.js", [AssetController::class, 'reactDom'])
+            ->name('laraberg.asset.react-dom');
+
         $jsRoute = Route::get("{$prefix}/js/laraberg.js", [AssetController::class, 'js'])
             ->name('laraberg.asset.js');
 
@@ -71,6 +77,8 @@ class LarabergServiceProvider extends ServiceProvider
             ->name('laraberg.asset.global-styles');
 
         $laraberg = app(Laraberg::class);
+        $laraberg->setReactRouteUri($reactRoute->uri);
+        $laraberg->setReactDomRouteUri($reactDomRoute->uri);
         $laraberg->setJsRouteUri($jsRoute->uri);
         $laraberg->setJsChunkRouteUri($jsChunkRoute->uri);
         $laraberg->setCssRouteUri($cssRoute->uri);
@@ -87,6 +95,10 @@ class LarabergServiceProvider extends ServiceProvider
      */
     protected function registerBladeDirectives(): void
     {
+        Blade::directive('larabergReact', function (string $expression) {
+            return "<?php echo \Oobi\Laraberg\Laraberg::reactTags({$expression}); ?>";
+        });
+
         Blade::directive('larabergStyles', function (string $expression) {
             return "<?php echo \Oobi\Laraberg\Laraberg::cssTag({$expression}); ?>";
         });

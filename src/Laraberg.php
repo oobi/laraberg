@@ -6,6 +6,10 @@ use Oobi\Laraberg\Blocks\BlockTypeRegistry;
 
 class Laraberg
 {
+    protected string $reactRouteUri = '';
+
+    protected string $reactDomRouteUri = '';
+
     protected string $jsRouteUri = '';
 
     protected string $jsChunkRouteUri = '';
@@ -13,6 +17,22 @@ class Laraberg
     protected string $cssRouteUri = '';
 
     protected string $globalStylesRouteUri = '';
+
+    /**
+     * Set the React route URI (called during boot).
+     */
+    public function setReactRouteUri(string $uri): void
+    {
+        $this->reactRouteUri = $uri;
+    }
+
+    /**
+     * Set the ReactDOM route URI (called during boot).
+     */
+    public function setReactDomRouteUri(string $uri): void
+    {
+        $this->reactDomRouteUri = $uri;
+    }
 
     /**
      * Set the JS route URI (called during boot).
@@ -44,6 +64,51 @@ class Laraberg
     public function setGlobalStylesRouteUri(string $uri): void
     {
         $this->globalStylesRouteUri = $uri;
+    }
+
+    /**
+     * Generate the <script> tags for React and ReactDOM.
+     *
+     * These must be loaded before laraberg.js since React is externalized.
+     */
+    public static function reactTags(array $options = []): string
+    {
+        $reactUrl = static::reactUrl($options);
+        $reactDomUrl = static::reactDomUrl($options);
+        $nonce = isset($options['nonce']) ? " nonce=\"{$options['nonce']}\"" : '';
+
+        return "<script src=\"{$reactUrl}\" crossorigin{$nonce}></script>\n"
+             . "<script src=\"{$reactDomUrl}\" crossorigin{$nonce}></script>";
+    }
+
+    /**
+     * Get the React URL.
+     */
+    public static function reactUrl(array $options = []): string
+    {
+        $instance = app(static::class);
+
+        return static::assetUrl(
+            $instance->reactRouteUri,
+            __DIR__.'/../public/js/react.min.js',
+            'vendor/laraberg/js/react.min.js',
+            $options
+        );
+    }
+
+    /**
+     * Get the ReactDOM URL.
+     */
+    public static function reactDomUrl(array $options = []): string
+    {
+        $instance = app(static::class);
+
+        return static::assetUrl(
+            $instance->reactDomRouteUri,
+            __DIR__.'/../public/js/react-dom.min.js',
+            'vendor/laraberg/js/react-dom.min.js',
+            $options
+        );
     }
 
     /**

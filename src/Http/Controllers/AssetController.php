@@ -37,6 +37,28 @@ class AssetController extends Controller
     }
 
     /**
+     * Serve the React production UMD file.
+     */
+    public function react(): BinaryFileResponse|Response
+    {
+        return $this->pretendResponseIsFile(
+            __DIR__.'/../../../public/js/react.min.js',
+            'application/javascript; charset=utf-8'
+        );
+    }
+
+    /**
+     * Serve the ReactDOM production UMD file.
+     */
+    public function reactDom(): BinaryFileResponse|Response
+    {
+        return $this->pretendResponseIsFile(
+            __DIR__.'/../../../public/js/react-dom.min.js',
+            'application/javascript; charset=utf-8'
+        );
+    }
+
+    /**
      * Serve the Laraberg CSS file.
      */
     public function css(): BinaryFileResponse|Response
