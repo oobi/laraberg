@@ -205,6 +205,102 @@ in Javascript using the global `Laraberg` object.
 - `Laraberg.wordpress.hooks`
 - `Laraberg.wordpress.serverSideRender`
 
+### Addon Blocks (ClientBlockRegistry)
+
+Laraberg provides a central registry that lets any Laravel package register
+custom blocks and block categories. All registered blocks are output by a
+single `@larabergBlocks` Blade directive — no per-package directives needed.
+
+#### Adding `@larabergBlocks` to your editor view
+
+Place the directive after `@larabergScripts` in your Blade template:
+
+```blade
+@larabergScripts
+@larabergBlocks
+```
+
+This outputs:
+1. A `<script>` tag with JSON config (categories registered by all packages)
+2. A bootstrap script that registers the categories in the Gutenberg inserter
+3. Individual `<script>` tags for every registered block
+
+#### Registering blocks from a package
+
+In your package's `ServiceProvider::boot()` method:
+
+```php
+use Oobi\Laraberg\Blocks\ClientBlockRegistry;
+
+public function boot(): void
+{
+    $registry = app(ClientBlockRegistry::class);
+
+    // Register a custom category (optional)
+    $registry->registerCategory('my-addon', 'My Addon Blocks');
+
+    // Register client-side blocks
+    $registry->register(
+        'my-addon/widget',
+        __DIR__.'/../resources/js/blocks/widget.js'
+    );
+}
+```
+
+For server-side rendered blocks, also register the PHP render callback:
+
+```php
+use Oobi\Laraberg\Laraberg;
+
+Laraberg::registerBlockType(
+    'my-addon/widget',
+    [],
+    function (array $attributes, string $content): string {
+        return view('my-addon::blocks.widget', compact('attributes', 'content'))->render();
+    }
+);
+```
+
+#### Writing a block JS file
+
+Block JS files are plain JavaScript (no build step required). Use the
+`Laraberg.wordpress.*` exports instead of ES module imports:
+
+```js
+(function () {
+    'use strict';
+
+    var el = Laraberg.wordpress.element.createElement;
+    var category = (window.LarabergBlocks && window.LarabergBlocks.category) || 'widgets';
+
+    Laraberg.registerBlockType('my-addon/widget', {
+        title: 'My Widget',
+        icon: 'smiley',
+        category: category,
+
+        edit: function () {
+            return el('div', null, 'Hello from the editor!');
+        },
+
+        save: function () {
+            return el('div', null, 'Hello from the frontend!');
+        },
+    });
+})();
+```
+
+#### Asset serving
+
+Block JS files are served via Laravel routes under `/laraberg/addons/`:
+
+| Route | Purpose |
+|-------|---------|
+| `/laraberg/addons/bootstrap.js` | Registers custom categories |
+| `/laraberg/addons/blocks/{slug}.js` | Serves individual block scripts |
+
+The slug is derived from the block name: `my-addon/widget` → `my-addon-widget`.
+Cache-busting `?v=` timestamps are appended automatically.
+
 ### Global Styles & theme.json
 
 Laraberg includes a PHP-based Global Styles system that mirrors WordPress's

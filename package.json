@@ -14,7 +14,10 @@
     "start": "npm run watch",
     "prebuild": "npm run clean",
     "build": "webpack --config webpack/webpack.prod.js",
-    "lint": "npx eslint resources/ts/"
+    "lint": "npx eslint resources/ts/",
+    "docs": "npx vitepress dev docs",
+    "docs:build": "npx vitepress build docs",
+    "docs:preview": "npx vitepress preview docs"
   },
   "repository": {
     "type": "git",
