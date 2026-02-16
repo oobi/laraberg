@@ -1,9 +1,9 @@
 <?php
 
-namespace VanOns\Laraberg\Controllers;
+namespace Oobi\Laraberg\Controllers;
 
 use Illuminate\Http\Request;
-use VanOns\Laraberg\Blocks\Block;
+use Oobi\Laraberg\Blocks\Block;
 
 class BlockRendererController
 {

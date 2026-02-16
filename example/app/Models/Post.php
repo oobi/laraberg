@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use VanOns\Laraberg\Traits\RendersContent;
+use Oobi\Laraberg\Traits\RendersContent;
 
 class Post extends Model
 {

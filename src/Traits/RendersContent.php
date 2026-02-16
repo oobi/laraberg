@@ -1,8 +1,8 @@
 <?php
 
-namespace VanOns\Laraberg\Traits;
+namespace Oobi\Laraberg\Traits;
 
-use VanOns\Laraberg\Blocks\ContentRenderer;
+use Oobi\Laraberg\Blocks\ContentRenderer;
 
 use function app;
 

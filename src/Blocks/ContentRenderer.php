@@ -1,6 +1,6 @@
 <?php
 
-namespace VanOns\Laraberg\Blocks;
+namespace Oobi\Laraberg\Blocks;
 
 class ContentRenderer
 {

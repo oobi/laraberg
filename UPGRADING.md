@@ -10,7 +10,7 @@ When updating Laraberg you have to publish the vendor files again by running
 the following command:
 
 ```bash
-php artisan vendor:publish --provider="VanOns\Laraberg\LarabergServiceProvider" --tag="public" --force
+php artisan vendor:publish --provider="Oobi\Laraberg\LarabergServiceProvider" --tag="public" --force
 ```
 
 ## v1 to v2

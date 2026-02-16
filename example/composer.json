@@ -20,7 +20,7 @@
         "laravel/pint": "^1.17.2",
         "laravel/sanctum": "^3.3.3",
         "laravel/tinker": "^2.9",
-        "van-ons/laraberg": "@dev"
+        "oobi/laraberg": "@dev"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.1.0",

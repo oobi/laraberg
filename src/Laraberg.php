@@ -1,8 +1,8 @@
 <?php
 
-namespace VanOns\Laraberg;
+namespace Oobi\Laraberg;
 
-use VanOns\Laraberg\Blocks\BlockTypeRegistry;
+use Oobi\Laraberg\Blocks\BlockTypeRegistry;
 
 class Laraberg
 {

@@ -2,11 +2,9 @@
 
 # Laraberg
 
-<!-- BADGES -->
+A Gutenberg block editor implementation for Laravel, updated to **Gutenberg v22.4.1**.
 
-Laraberg aims to provide an easy way to integrate the Gutenberg editor with your
-Laravel projects. It takes the Gutenberg editor and adds all the communication
-and data it needs to function in a Laravel environment.
+> **Note:** This package is based on the excellent work done by [Maurice Wijnia](https://github.com/VanOns/laraberg) at [Van Ons](https://van-ons.nl/). The original [`van-ons/laraberg`](https://github.com/VanOns/laraberg) package has been abandoned and is no longer maintained. This fork continues development with updated Gutenberg packages, React 18 support, and ongoing improvements.
 
 ## Quick start
 
@@ -21,13 +19,13 @@ and data it needs to function in a Laravel environment.
 Install the package using Composer:
 
 ```bash
-composer require van-ons/laraberg
+composer require oobi/laraberg
 ```
 
 Add the vendor files to your project (CSS, JS & config):
 
 ```bash
-php artisan vendor:publish --provider="VanOns\Laraberg\LarabergServiceProvider"
+php artisan vendor:publish --provider="Oobi\Laraberg\LarabergServiceProvider"
 ```
 
 #### JavaScript and CSS files
@@ -115,7 +113,7 @@ In order to add the editor content to a model, Laraberg provides the
 `RendersContent` trait:
 
 ```php
-use VanOns\Laraberg\Traits\RendersContent;
+use Oobi\Laraberg\Traits\RendersContent;
 
 class MyModel extends Model
 {
@@ -129,7 +127,7 @@ raw editor content. By default, the `render` method renders the content in the
 property on your model to the column that you want to use instead:
 
 ```php
-use VanOns\Laraberg\Traits\RendersContent;
+use Oobi\Laraberg\Traits\RendersContent;
 
 class MyModel extends Model
 {
@@ -225,21 +223,14 @@ Please see [security] for more information about how we deal with security.
 
 ## Credits
 
-We would like to thank the following contributors for their contributions to this project:
+This package is a fork of [`van-ons/laraberg`](https://github.com/VanOns/laraberg), originally created by [Maurice Wijnia](https://github.com/mauricewijnia) at [Van Ons](https://van-ons.nl/). We are grateful for the foundation they built.
 
+- [Van Ons](https://van-ons.nl/) — Original package authors
 - [All Contributors][all-contributors]
 
 ## License
 
 The scripts and documentation in this project are released under the [GPL-3.0 License][license].
-
----
-
-<p align="center">
-    <a href="https://van-ons.nl/" target="_blank">
-        <img src="https://opensource.van-ons.nl/files/cow.png" width="50" alt="Logo of Van Ons">
-    </a>
-</p>
 
 [Gutenberg documentation]: https://wordpress.org/gutenberg/handbook/designers-developers/developers/tutorials/block-tutorial/writing-your-first-block-type/
 [contributing]: CONTRIBUTING.md

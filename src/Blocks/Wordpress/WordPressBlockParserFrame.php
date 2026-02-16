@@ -1,6 +1,6 @@
 <?php
 
-namespace VanOns\Laraberg\Blocks\Wordpress;
+namespace Oobi\Laraberg\Blocks\Wordpress;
 
 /**
  * Class WordPressBlockParserFrame

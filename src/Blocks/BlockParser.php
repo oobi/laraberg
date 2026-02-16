@@ -1,8 +1,8 @@
 <?php
 
-namespace VanOns\Laraberg\Blocks;
+namespace Oobi\Laraberg\Blocks;
 
-use VanOns\Laraberg\Blocks\Wordpress\WordPressBlockParser;
+use Oobi\Laraberg\Blocks\Wordpress\WordPressBlockParser;
 
 class BlockParser
 {

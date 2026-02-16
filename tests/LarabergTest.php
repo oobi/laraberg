@@ -1,17 +1,28 @@
 <?php
 
-namespace VanOns\Laraberg\Test;
+namespace Oobi\Laraberg\Test;
 
-use Laraberg;
+use Oobi\Laraberg\Laraberg;
 
 class LarabergTest extends TestCase
 {
-    /**
-     * Check that the do stuff function returns void
-     * @return void
-     */
-    public function testDoStuffReturnsVoid()
+    public function testServiceProviderIsRegistered(): void
     {
-        $this->assertSame(Laraberg::doStuff(), 'Did stuff');
+        $this->assertTrue(
+            $this->app->providerIsLoaded(\Oobi\Laraberg\LarabergServiceProvider::class)
+        );
+    }
+
+    public function testBlockTypeCanBeRegistered(): void
+    {
+        Laraberg::registerBlockType(
+            'test/my-block',
+            [],
+            function ($attributes, $content) {
+                return '<div>Test block</div>';
+            }
+        );
+
+        $this->assertTrue(true);
     }
 }

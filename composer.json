@@ -1,11 +1,15 @@
 {
-    "name": "van-ons/laraberg",
-    "description": "A Gutenberg implementation for Laravel",
+    "name": "oobi/laraberg",
+    "description": "A Gutenberg block editor implementation for Laravel",
     "license": "GPL-3.0-or-later",
     "authors": [
         {
             "name": "Maurice Wijnia",
             "email": "maurice@van-ons.nl"
+        },
+        {
+            "name": "Oobi",
+            "homepage": "https://github.com/oobi"
         }
     ],
     "require": {
@@ -20,17 +24,17 @@
     },
     "autoload": {
         "psr-4": {
-            "VanOns\\Laraberg\\": "src"
+            "Oobi\\Laraberg\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VanOns\\Laraberg\\Test\\": "tests"
+            "Oobi\\Laraberg\\Test\\": "tests"
         }
     },
     "extra": {
         "laravel": {
-            "providers": "VanOns\\Laraberg\\LarabergServiceProvider"
+            "providers": "Oobi\\Laraberg\\LarabergServiceProvider"
         }
     },
     "scripts": {
