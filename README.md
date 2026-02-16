@@ -205,6 +205,115 @@ in Javascript using the global `Laraberg` object.
 - `Laraberg.wordpress.hooks`
 - `Laraberg.wordpress.serverSideRender`
 
+### Global Styles & theme.json
+
+Laraberg includes a PHP-based Global Styles system that mirrors WordPress's
+`WP_Theme_JSON` pipeline. It generates CSS from a `theme.json` configuration
+file — providing preset CSS variables, layout constraints, admin color scheme
+variables, and preset utility classes.
+
+#### Setup
+
+Add the `@larabergGlobalStyles` Blade directive to your editor view's `<head>`:
+
+```blade
+<head>
+    @larabergGlobalStyles
+    <link rel="stylesheet" href="{{ asset('vendor/laraberg/css/laraberg.css') }}">
+</head>
+```
+
+This renders a `<link>` tag pointing to `/laraberg/css/global-styles.css`,
+which is automatically served by Laraberg's route. The editor JavaScript
+auto-discovers this tag and injects the styles into the iframe.
+
+#### What it generates
+
+The generated CSS includes:
+
+- **Admin color scheme variables** — `--wp-admin-theme-color`, accent and RGB variants
+- **Preset CSS variables** — colors, gradients, font sizes, duotone filters, spacings
+- **Layout constraint rules** — content width, wide width, and alignment styles
+- **Root container padding** — canvas padding for the editor
+- **Preset utility classes** — `.has-{slug}-color`, `.has-{slug}-background-color`, `.has-{slug}-font-size`, etc.
+
+#### Customizing with theme.json
+
+Laraberg ships with core defaults in its own `config/theme.json`. To customize
+these settings — for example, to change content width, add custom colors, or
+define font sizes — create an override file in your application.
+
+The system checks these locations in order, using the first one found:
+
+1. **`config/laraberg-theme.json`** (recommended)
+2. **`theme.json`** in your project root
+
+Create your override file with only the settings you want to change. Values are
+deep-merged over the core defaults — you don't need to duplicate the entire
+file:
+
+```json
+{
+    "version": 3,
+    "settings": {
+        "layout": {
+            "contentSize": "720px",
+            "wideSize": "1100px"
+        },
+        "color": {
+            "palette": [
+                { "name": "Primary", "slug": "primary", "color": "#1e40af" },
+                { "name": "Secondary", "slug": "secondary", "color": "#9333ea" },
+                { "name": "Dark", "slug": "dark", "color": "#1f2937" },
+                { "name": "Light", "slug": "light", "color": "#f9fafb" }
+            ]
+        },
+        "typography": {
+            "fontSizes": [
+                { "name": "Small", "slug": "small", "size": "0.875rem" },
+                { "name": "Normal", "slug": "normal", "size": "1rem" },
+                { "name": "Large", "slug": "large", "size": "1.5rem" },
+                { "name": "Huge", "slug": "huge", "size": "2.25rem" }
+            ]
+        }
+    }
+}
+```
+
+> **Note:** Array-based settings like `palette` and `fontSizes` are replaced
+> entirely (not merged item-by-item). Include all values you want in your array.
+
+##### Layout settings
+
+The `settings.layout` object controls content width constraints in the editor:
+
+| Property      | Default  | Description                                              |
+|---------------|----------|----------------------------------------------------------|
+| `contentSize` | `800px`  | Max width for standard blocks (paragraphs, headings, etc) |
+| `wideSize`    | `1200px` | Max width for blocks using the "Wide width" alignment     |
+
+Blocks set to "Full width" alignment ignore both values and stretch to the
+container edge.
+
+##### Admin color scheme
+
+The admin color scheme can be set in `config/laraberg.php`:
+
+```php
+'admin_color' => 'fresh', // Options: fresh, light, modern, blue, coffee, ectoplasm, midnight, ocean, sunrise
+```
+
+#### Clearing the cache
+
+The Global Styles CSS is cached on first generation within each request. If you
+change `theme.json` or `config/laraberg.php` in a running application, the CSS
+updates automatically on the next request. To force a refresh in tests or
+commands, call:
+
+```php
+\Oobi\Laraberg\Services\GlobalStyles\ThemeJson::flush();
+```
+
 ## Contributing
 
 Please see [contributing] for more information about how you can contribute.
