@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Oobi\Laraberg\Blocks\BlockParser;
 use Oobi\Laraberg\Blocks\BlockTypeRegistry;
+use Oobi\Laraberg\Blocks\ClientBlockRegistry;
 use Oobi\Laraberg\Blocks\ContentRenderer;
+use Oobi\Laraberg\Http\Controllers\AddonAssetController;
 use Oobi\Laraberg\Http\Controllers\AssetController;
 use Oobi\Laraberg\Services\OEmbedService;
 
@@ -27,6 +29,7 @@ class LarabergServiceProvider extends ServiceProvider
         }
 
         $this->registerAssetRoutes();
+        $this->registerAddonRoutes();
         $this->registerBladeDirectives();
     }
 
@@ -41,10 +44,13 @@ class LarabergServiceProvider extends ServiceProvider
             return BlockTypeRegistry::getInstance();
         });
 
+        $this->app->singleton(ClientBlockRegistry::class);
+
         $this->app->alias(ContentRenderer::class, 'laraberg.renderer');
         $this->app->alias(BlockParser::class, 'laraberg.parser');
         $this->app->alias(OEmbedService::class, 'laraberg.embed');
         $this->app->alias(BlockTypeRegistry::class, 'laraberg.registry');
+        $this->app->alias(ClientBlockRegistry::class, 'laraberg.addons');
     }
 
     /**
@@ -86,12 +92,31 @@ class LarabergServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register routes that serve addon block JS files.
+     *
+     * These routes serve the bootstrap script and individual block
+     * scripts registered by addon packages via ClientBlockRegistry.
+     */
+    protected function registerAddonRoutes(): void
+    {
+        $prefix = config('laraberg.prefix', 'laraberg');
+
+        Route::get("{$prefix}/addons/bootstrap.js", [AddonAssetController::class, 'bootstrap'])
+            ->name('laraberg.addon.bootstrap');
+
+        Route::get("{$prefix}/addons/blocks/{name}.js", [AddonAssetController::class, 'block'])
+            ->where('name', '[a-zA-Z0-9_-]+')
+            ->name('laraberg.addon.block');
+    }
+
+    /**
      * Register Blade directives for including Laraberg assets.
      *
      * Usage in Blade:
      *   @larabergStyles      — outputs the <link> tag for CSS
      *   @larabergScripts     — outputs the <script> tag for JS
      *   @larabergScriptUrl   — outputs just the JS URL
+     *   @larabergBlocks      — outputs all addon block <script> tags
      */
     protected function registerBladeDirectives(): void
     {
@@ -113,6 +138,10 @@ class LarabergServiceProvider extends ServiceProvider
 
         Blade::directive('larabergGlobalStyles', function (string $expression) {
             return "<?php echo \Oobi\Laraberg\Laraberg::globalStylesTag({$expression}); ?>";
+        });
+
+        Blade::directive('larabergBlocks', function (string $expression) {
+            return "<?php echo \Oobi\Laraberg\Blocks\ClientBlockRegistry::scripts({$expression}); ?>";
         });
     }
 }
